@@ -14,8 +14,6 @@ EXP_COLS = ['expid',
             'success2',
             'success3',
             'success4',
-            'disputed',
-            'claimed',
             'bcdate',
             'smtdate',
             'termdate',
@@ -37,18 +35,12 @@ exp_df[DATE_COLS] = exp_df[DATE_COLS].apply(pd.to_datetime, errors='coerce')
 exp_df.dropna(subset=['year', 'season'], inplace=True, ignore_index=True)
 exp_df.reset_index(drop=True, inplace=True)
 
-# Remove cases where the summit is disputed, or where termination reason is [0, 2, 11, 12, 13, 14]
-exp_df.query('disputed == False', inplace=True)
-exp_df = exp_df.loc[~exp_df['termreason'].isin([0, 2, 11, 12, 13, 14]), :]
-exp_df.reset_index(inplace=True, drop=True)
-exp_df.drop(columns=['claimed', 'disputed'], inplace=True)
-
 # Reconcile member deaths and hired deaths
 exp_df['deaths'] = exp_df['mdeaths'] + exp_df['hdeaths']
 exp_df.drop(columns=['mdeaths', 'hdeaths'], inplace=True)
 
 # Let's look just at Everest for a second
-ev_df = exp_df.query('peakid == "EVER"')
+ev_df = exp_df.query('peakid == "ANN1"')
 
 # Group by year and season and count deaths
 ev_df = ev_df.groupby(by=['year', 'season'])['deaths'].sum().reset_index()
@@ -76,7 +68,7 @@ ev_df.query('has_exped == True', inplace=True)
 ev_df.drop(columns=['year', 'has_exped'], inplace=True)
 
 ev_df['deaths'] = 2.5 * (ev_df['deaths'] / ev_df['deaths'].max())
-ev_df.loc[ev_df['is_dashed'], 'deaths'] = 0.5
+ev_df.loc[ev_df['is_dashed'], 'deaths'] = 0.3
 ev_df.query('deaths > 0', inplace=True)
 
 # Save
