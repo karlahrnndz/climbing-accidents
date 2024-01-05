@@ -4,6 +4,7 @@ import numpy as np
 import os
 
 INPUT_FOLDER = os.path.join('data', 'input')
+OUTPUT_FOLDER = os.path.join('..', 'd3')
 EXPED_FILE = 'expeditions.csv'
 EXP_COLS = ['expid',
             'peakid',
@@ -39,7 +40,7 @@ exp_df.drop(columns=['bcdate', 'smtdate', 'termdate'], inplace=True)
 exp_df['date'] = np.where((exp_df['date'].dt.year - exp_df['year']).gt(1),
                           exp_df['date'] - pd.DateOffset(years=100),
                           exp_df['date'])  # Pandas might be rounding up the century when reading in dates
-exp_df.drop(columns=['year'], inplace=True)
+# exp_df.drop(columns=['year'], inplace=True)
 exp_df.rename(columns={'smtdate': 'hpdate'}, inplace=True)
 
 # Keep only rows where date is not missing
@@ -53,24 +54,40 @@ exp_df.reset_index(inplace=True, drop=True)
 exp_df.drop(columns=['claimed', 'disputed'], inplace=True)
 
 # Reconcile member deaths and hired deaths
-exp_df['tot_deaths'] = exp_df['mdeaths'] + exp_df['hdeaths']
+exp_df['deaths'] = exp_df['mdeaths'] + exp_df['hdeaths']
 exp_df.drop(columns=['mdeaths', 'hdeaths'], inplace=True)
 
 # Let's look just at Everest for a second
 ev_df = exp_df.query('peakid == "EVER"')
 
-# Group by date
-ev_df = ev_df.groupby(by=['date'])['tot_deaths'].sum().reset_index()
-ev_df.sort_values(by='date', ascending=True, inplace=True, ignore_index=True)
+# Group by year and season
+ev_df = ev_df.groupby(by=['year', 'season'])['deaths'].sum().reset_index()
+ev_df.sort_values(by=['year', 'season'], ascending=True, inplace=True, ignore_index=True)
+ev_df['ys'] = ev_df['year'].astype(str) + '-' + ev_df['season'].astype(str)
 
-# Create another dataframe with all days from ev_df.date.min() to ev_df.date.max() (by day)
-date_range = pd.date_range(start=ev_df.date.min(), end=ev_df.date.max())
-date_range_df = pd.DataFrame({'date': date_range})
-ev_df = date_range_df.merge(ev_df, how='left', on='date')
-ev_df['tot_deaths'] = ev_df['tot_deaths'].fillna(0)
+# Create another dataframe with all year season combinations
+y_range = range(int(ev_df.year.min()), int(ev_df.year.max()))
+s_range = range(1, 4)
+ys_range = sorted([f"{y}-{s}" for s in s_range for y in y_range])
+ys_df = pd.DataFrame({'ys': ys_range})
 
-# Group by month because there are too many days
-ev_df['ym'] = ev_df['date'].dt.strftime('%Y-%m')
-ev_df = ev_df.groupby(by='ym')['tot_deaths'].sum().reset_index()
+ev_df = ev_df.groupby(by='ys')['deaths'].sum().reset_index()
+ev_df = ys_df.merge(ev_df, how='left', on='ys')
+ev_df['deaths'] = ev_df['deaths'].fillna(0)
+
+# Prepare for plotting in D3
+ev_df.sort_values(by='ys', ascending=True, inplace=True, ignore_index=True)
+ev_df.drop(columns='ys', inplace=True)
+ev_df.reset_index(inplace=True)
+ev_df.rename(columns={'index': 'idx'}, inplace=True)
+ev_df.query('deaths > 0', inplace=True)
+ev_df['is_dashed'] = False
+ev_df['season'] = 'winter'
+
+# TODO - temporary formatting
+ev_df['deaths'] = 2 * (ev_df['deaths'] / ev_df['deaths'].max())
+
+# Save
+ev_df.to_csv(os.path.join(OUTPUT_FOLDER, 'ev_df.csv'), index=False)
 
 print('hi')

@@ -19,14 +19,18 @@
         const h1 = 100; // height of L1 and L3
         const h2 = 65;  // height of L2
         const angle = 90 + 45;
-        const translationStep = 5;
+        const translationStep = 1.5;
 
         // Load the CSV file asynchronously
-        d3.csv("squares.csv").then(data => {
+        d3.csv("ev_df.csv").then(data => {
+            
 
             // Initialize variables for iterating through the CSV rows
             let i = 0;
             let currentRow = data[i];
+            
+            // Find the maximum value of idx in the CSV file
+            const maxIdx = d3.max(data, d => +d.idx);
 
             // Define colors for each season
             const seasonColors = {
@@ -36,8 +40,8 @@
                 winter: "blue"
             };
 
-            // Draw multiple rectangles with translation
-            for (let idx = 0; idx < data[data.length - 1].idx + 1; idx++) {
+            // Iterate up to the maximum value of idx (inclusive)
+            for (let idx = 0; idx <= maxIdx; idx++) {
 
                 // Check if "idx" matches the current index in the CSV
                 if (+currentRow.idx === idx) {
@@ -48,8 +52,8 @@
 
                     // Determine line thickness, fill color, and dashed property based on conditions
                     const isDashed = currentRow.is_dashed === "True";
-                    const currentThickness = +currentRow.thickness || 1;
-                    const fillColor = "rgba(255, 255, 255, 0.5)";
+                    const currentThickness = +currentRow.deaths || 1;
+                    const fillColor = "rgba(255, 255, 255, 0.1)";
                     const dashLength = isDashed ? 2 : 0; // Adjust the dash length
 
                     // Append a path for each rectangle
