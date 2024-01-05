@@ -19,7 +19,7 @@
         const h1 = 100; // height of L1 and L3
         const h2 = 65;  // height of L2
         const angle = 90 + 45;
-        const translationStep = 1.5;
+        const translationStep = 2;
 
         // Load the CSV file asynchronously
         d3.csv("ev_df.csv").then(data => {
@@ -34,10 +34,10 @@
 
             // Define colors for each season
             const seasonColors = {
-                spring: "green",
-                summer: "orange",
-                fall: "brown",
-                winter: "blue"
+                spring: "rgba(231, 99, 117, 0.9)",
+                summer: "rgba(244, 184, 10, 0.9)",
+                fall: "rgba(26, 41, 57, 0.9)",
+                winter: "rgba(99, 180, 189, 0.9)",
             };
 
             // Iterate up to the maximum value of idx (inclusive)
@@ -53,7 +53,7 @@
                     // Determine line thickness, fill color, and dashed property based on conditions
                     const isDashed = currentRow.is_dashed === "True";
                     const currentThickness = +currentRow.deaths || 1;
-                    const fillColor = "rgba(255, 255, 255, 0.1)";
+                    const fillColor = "rgba(255, 255, 255, 0.3)";
                     const dashLength = isDashed ? 2 : 0; // Adjust the dash length
 
                     // Append a path for each rectangle

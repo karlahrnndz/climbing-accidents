@@ -1,4 +1,4 @@
-from datetime import datetime
+import matplotlib.pyplot as plt
 import pandas as pd
 import numpy as np
 import os
@@ -33,23 +33,13 @@ exp_df['has_summit'] = exp_df[['success1', 'success2', 'success3', 'success4']].
 exp_df.drop(columns=['success1', 'success2', 'success3', 'success4'], inplace=True)
 exp_df[DATE_COLS] = exp_df[DATE_COLS].apply(pd.to_datetime, errors='coerce')
 
-# Choosing smtdate > bcdate > termdate to represent expedition date
-exp_df['date'] = np.where(exp_df['smtdate'].isna(), exp_df['bcdate'], exp_df['smtdate'])
-exp_df['date'] = np.where(exp_df['date'].isna(), exp_df['termdate'], exp_df['date'])
-exp_df.drop(columns=['bcdate', 'smtdate', 'termdate'], inplace=True)
-exp_df['date'] = np.where((exp_df['date'].dt.year - exp_df['year']).gt(1),
-                          exp_df['date'] - pd.DateOffset(years=100),
-                          exp_df['date'])  # Pandas might be rounding up the century when reading in dates
-# exp_df.drop(columns=['year'], inplace=True)
-exp_df.rename(columns={'smtdate': 'hpdate'}, inplace=True)
-
-# Keep only rows where date is not missing
-exp_df = exp_df.loc[~exp_df['date'].isna(), :]
+# Keep only rows where year and season are not missing
+exp_df.dropna(subset=['year', 'season'], inplace=True, ignore_index=True)
 exp_df.reset_index(drop=True, inplace=True)
 
-# Remove cases where the summit is claimed or disputed
-exp_df.query('claimed == False', inplace=True)
+# Remove cases where the summit is disputed, or where termination reason is [0, 2, 11, 12, 13, 14]
 exp_df.query('disputed == False', inplace=True)
+exp_df = exp_df.loc[~exp_df['termreason'].isin([0, 2, 11, 12, 13, 14]), :]
 exp_df.reset_index(inplace=True, drop=True)
 exp_df.drop(columns=['claimed', 'disputed'], inplace=True)
 
@@ -60,32 +50,34 @@ exp_df.drop(columns=['mdeaths', 'hdeaths'], inplace=True)
 # Let's look just at Everest for a second
 ev_df = exp_df.query('peakid == "EVER"')
 
-# Group by year and season
+# Group by year and season and count deaths
 ev_df = ev_df.groupby(by=['year', 'season'])['deaths'].sum().reset_index()
 ev_df.sort_values(by=['year', 'season'], ascending=True, inplace=True, ignore_index=True)
-ev_df['ys'] = ev_df['year'].astype(str) + '-' + ev_df['season'].astype(str)
 
-# Create another dataframe with all year season combinations
-y_range = range(int(ev_df.year.min()), int(ev_df.year.max()))
-s_range = range(1, 4)
-ys_range = sorted([f"{y}-{s}" for s in s_range for y in y_range])
-ys_df = pd.DataFrame({'ys': ys_range})
+# Mark cases where there are expeditions but no deaths
+ev_df['has_exped'] = True
 
-ev_df = ev_df.groupby(by='ys')['deaths'].sum().reset_index()
-ev_df = ys_df.merge(ev_df, how='left', on='ys')
+# Add all year season combinations in the min/max range
+y_range = range(int(ev_df.year.min()), int(ev_df.year.max()) + 1)
+s_range = range(1, 5)
+ys_range = sorted([(y, s) for s in s_range for y in y_range])
+ys_df = pd.DataFrame(ys_range, columns=['year', 'season'])
+ev_df = ys_df.merge(ev_df, how='left', on=['year', 'season'])
 ev_df['deaths'] = ev_df['deaths'].fillna(0)
+ev_df['has_exped'] = ev_df['has_exped'].fillna(False)
 
 # Prepare for plotting in D3
-ev_df.sort_values(by='ys', ascending=True, inplace=True, ignore_index=True)
-ev_df.drop(columns='ys', inplace=True)
+ev_df['is_dashed'] = ev_df['has_exped'] & ev_df['deaths'].eq(0)
+ev_df.sort_values(by=['year', 'season'], ascending=True, inplace=True, ignore_index=True)
+ev_df['season'] = np.where(ev_df['is_dashed'], 'fall', 'spring')
 ev_df.reset_index(inplace=True)
 ev_df.rename(columns={'index': 'idx'}, inplace=True)
-ev_df.query('deaths > 0', inplace=True)
-ev_df['is_dashed'] = False
-ev_df['season'] = 'winter'
+ev_df.query('has_exped == True', inplace=True)
+ev_df.drop(columns=['year', 'has_exped'], inplace=True)
 
-# TODO - temporary formatting
-ev_df['deaths'] = 2 * (ev_df['deaths'] / ev_df['deaths'].max())
+ev_df['deaths'] = 2.5 * (ev_df['deaths'] / ev_df['deaths'].max())
+ev_df.loc[ev_df['is_dashed'], 'deaths'] = 0.5
+ev_df.query('deaths > 0', inplace=True)
 
 # Save
 ev_df.to_csv(os.path.join(OUTPUT_FOLDER, 'ev_df.csv'), index=False)
