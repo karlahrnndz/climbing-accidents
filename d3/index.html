@@ -9,6 +9,9 @@
 <body>
     <svg width="2000" height="500" id="visualization"></svg>
 
+    <!-- Add a button for SVG download -->
+    <button id="downloadButton">Download SVG</button>
+
     <script>
         // Select the SVG container
         const svg = d3.select("#visualization");
@@ -20,9 +23,9 @@
         const h2 = 80; // Length of diagonal lines
         const angle = 135;
         const translationStep = 3.15;
-        const redColor = "rgba(240, 52, 52, 0.9)";
-        const blackColor = "rgba(22, 22, 22, 0.9)";
-        const backColor = "rgba(243, 243, 243, 0.2)";
+        const redColor = "rgba(240, 52, 52, 1)";
+        const blackColor = "rgba(22, 22, 22, 1)";
+        const backColor = "rgba(243, 243, 243, 1)";
 
         // Load the CSV file asynchronously
         d3.csv("plt_df.csv").then(data => {
@@ -122,6 +125,24 @@
                 .style("fill", "black")
                 .style("font-size", "14px")
                 .style("font-weight", "bold");
+        });
+
+        // Add a click event listener to the download button
+        document.getElementById("downloadButton").addEventListener("click", function() {
+            // Convert the SVG content to a data URI
+            const svgString = new XMLSerializer().serializeToString(document.getElementById("visualization"));
+            const svgBlob = new Blob([svgString], { type: "image/svg+xml" });
+            const svgUrl = URL.createObjectURL(svgBlob);
+
+            // Create a temporary link element, set its attributes, and trigger a click event
+            const downloadLink = document.createElement("a");
+            downloadLink.href = svgUrl;
+            downloadLink.download = "visualization.svg";
+            document.body.appendChild(downloadLink);
+            downloadLink.click();
+
+            // Remove the temporary link element
+            document.body.removeChild(downloadLink);
         });
     </script>
 </body>
