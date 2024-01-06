@@ -14,14 +14,15 @@
         const svg = d3.select("#visualization");
 
         // Constants
-        const x0 = 70;
-        const y = 100;
-        const h1 = 130; // height of L1 and L3
-        const h2 = 80;  // height of L2
-        const angle = 90 + 45;
+        const x0 = 70; // Starting x coordinate
+        const y = 100; // Starting y coordinate
+        const h1 = 130;// Length of vertical lines
+        const h2 = 80; // Length of diagonal lines
+        const angle = 135;
         const translationStep = 3.15;
-        const redDotColor = "rgba(240, 52, 52, 0.9)"; // New constant for red dot color
-        const blackDotColor = "rgba(22, 22, 22, 0.9)"; // New constant for red dot color
+        const redColor = "rgba(240, 52, 52, 0.9)";
+        const blackColor = "rgba(22, 22, 22, 0.9)";
+        const backColor = "rgba(243, 243, 243, 0.2)";
 
         // Load the CSV file asynchronously
         d3.csv("plt_df.csv").then(data => {
@@ -35,25 +36,22 @@
 
             // Define colors for each square
             const seasonColors = {
-                true: "rgba(22, 22, 22, 0.9)",
-                false: "rgba(240, 52, 52, 0.9)",
+                true: blackColor,
+                false: redColor,
             };
-
-            // Find the maximum value of no_exped for scaling the dot size
-            const maxNoExped = d3.max(data, d => +d.no_exped);
 
             // Add a background rectangle with the desired color
             svg.append("rect")
                 .attr("width", "100%")
                 .attr("height", "100%")
-                .attr("fill", "rgb(243, 243, 243)");
+                .attr("fill", backColor);
 
             // Add red "X" at coordinates x=1, y=h1
             svg.append("text")
                 .attr("x", x0)
                 .attr("y", 100)
                 .text(".")
-                .style("fill", "red")
+                .style("fill", redColor)
                 .style("font-size", "14px")
                 .style("font-weight", "bold");
 
@@ -62,12 +60,13 @@
                 .attr("x", x0 + (408 * translationStep))
                 .attr("y", 100)
                 .text(".")
-                .style("fill", "red")
+                .style("fill", redColor)
                 .style("font-size", "14px")
                 .style("font-weight", "bold");
 
             // Iterate through each row in the data for squares
             data.forEach(row => {
+                
                 // Convert the string to a boolean
                 const isGoodSeason = row.is_good_seas === "True";
 
@@ -78,9 +77,8 @@
 
                 // Determine line thickness, fill color, and dashed property based on conditions
                 const isDashed = row.is_dashed === "True";
-                const currentThickness = +row.no_deaths || 1; // Use the "no_deaths" column directly
-                const fillColor = "rgba(243, 243, 243, 0.2)";
-                const dashLength = isDashed ? 2 : 0; // Adjust the dash length
+                const currentThickness = +row.no_deaths || 1;
+                const dashLength = isDashed ? 2 : 0;
 
                 // Append a path for each rectangle
                 svg.append("path")
@@ -92,7 +90,7 @@
                     ]))
                     .style("stroke", seasonColors[isGoodSeason])
                     .style("stroke-width", isDashed ? currentThickness / 2 : currentThickness)
-                    .style("fill", fillColor)
+                    .style("fill", backColor)
                     .style("stroke-dasharray", isDashed ? `${dashLength} ${dashLength}` : "none")
                     .style("stroke-linejoin", "round"); // Set line join property
 
@@ -101,8 +99,8 @@
                     svg.append("circle")
                         .attr("cx", x2)
                         .attr("cy", y2 + 10)
-                        .attr("r", 2.5) // Adjust the radius as needed
-                        .style("fill", redDotColor);
+                        .attr("r", 2.5)
+                        .style("fill", redColor);
                 }
 
                 // Check if "high_succprob" is True, then add a dot above the rectangle
@@ -111,10 +109,8 @@
                     svg.append("circle")
                         .attr("cx", x2)
                         .attr("cy", y2 + secondCircleOffset)
-                        .attr("r", 2.5) // Adjust the radius as needed
-                        .style("fill", blackDotColor);
-                        // .style("stroke", blackDotColor)
-                        // .style("stroke-width", 1); 
+                        .attr("r", 2.5)
+                        .style("fill", blackColor);
                 }
             });
 
