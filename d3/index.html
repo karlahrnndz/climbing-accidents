@@ -7,24 +7,25 @@
     <script src="https://d3js.org/d3.v5.min.js"></script>
 </head>
 <body>
-    <svg width="1000" height="500" id="visualization"></svg>
+    <svg width="2000" height="500" id="visualization"></svg>
 
     <script>
         // Select the SVG container
         const svg = d3.select("#visualization");
 
-        // Set the dimensions and angles for each rectangle
-        const x0 = 100;
+        // Constants
+        const x0 = 70;
         const y = 100;
-        const h1 = 100; // height of L1 and L3
-        const h2 = 65;  // height of L2
+        const h1 = 130; // height of L1 and L3
+        const h2 = 80;  // height of L2
         const angle = 90 + 45;
-        const translationStep = 2;
+        const translationStep = 3.15;
+        const redDotColor = "rgba(240, 52, 52, 0.9)"; // New constant for red dot color
+        const blackDotColor = "rgba(22, 22, 22, 0.9)"; // New constant for red dot color
 
         // Load the CSV file asynchronously
-        d3.csv("ev_df.csv").then(data => {
+        d3.csv("plt_df.csv").then(data => {
             
-
             // Initialize variables for iterating through the CSV rows
             let i = 0;
             let currentRow = data[i];
@@ -32,49 +33,99 @@
             // Find the maximum value of idx in the CSV file
             const maxIdx = d3.max(data, d => +d.idx);
 
-            // Define colors for each season
+            // Define colors for each square
             const seasonColors = {
-                spring: "rgba(231, 99, 117, 0.9)",
-                summer: "rgba(244, 184, 10, 0.9)",
-                fall: "rgba(26, 41, 57, 0.9)",
-                winter: "rgba(99, 180, 189, 0.9)",
+                true: "rgba(22, 22, 22, 0.9)",
+                false: "rgba(240, 52, 52, 0.9)",
             };
 
-            // Iterate up to the maximum value of idx (inclusive)
-            for (let idx = 0; idx <= maxIdx; idx++) {
+            // Find the maximum value of no_exped for scaling the dot size
+            const maxNoExped = d3.max(data, d => +d.no_exped);
 
-                // Check if "idx" matches the current index in the CSV
-                if (+currentRow.idx === idx) {
-                    // Calculate the end point of L2 for each rectangle
-                    const x = x0 + idx * translationStep;
-                    const x2 = x + h2 * Math.cos((-angle) * (Math.PI / 180));
-                    const y2 = y + h1 + h2 * Math.sin(angle * (Math.PI / 180));
+            // Add a background rectangle with the desired color
+            svg.append("rect")
+                .attr("width", "100%")
+                .attr("height", "100%")
+                .attr("fill", "rgb(243, 243, 243)");
 
-                    // Determine line thickness, fill color, and dashed property based on conditions
-                    const isDashed = currentRow.is_dashed === "True";
-                    const currentThickness = +currentRow.deaths || 1;
-                    const fillColor = "rgba(255, 255, 255, 0.3)";
-                    const dashLength = isDashed ? 2 : 0; // Adjust the dash length
+            // Add red "X" at coordinates x=1, y=h1
+            svg.append("text")
+                .attr("x", x0)
+                .attr("y", 100)
+                .text(".")
+                .style("fill", "red")
+                .style("font-size", "14px")
+                .style("font-weight", "bold");
 
-                    // Append a path for each rectangle
-                    svg.append("path")
-                        .attr("d", d3.line().curve(d3.curveLinearClosed)([
-                            [x, y],
-                            [x, y + h1 + 0.5], // Slightly overlap the joint
-                            [x2, y2],
-                            [x2, y2 - h1 - 0.5], // Slightly overlap the joint
-                        ]))
-                        .style("stroke", seasonColors[currentRow.season])
-                        .style("stroke-width", isDashed ? currentThickness / 2 : currentThickness)
-                        .style("fill", fillColor)
-                        .style("stroke-dasharray", isDashed ? `${dashLength} ${dashLength}` : "none")
-                        .style("stroke-linejoin", "round"); // Set line join property
+            // Add red "X" at coordinates x=408, y=h1
+            svg.append("text")
+                .attr("x", x0 + (408 * translationStep))
+                .attr("y", 100)
+                .text(".")
+                .style("fill", "red")
+                .style("font-size", "14px")
+                .style("font-weight", "bold");
 
-                    // Move to the next row in the CSV
-                    i++;
-                    currentRow = data[i];
+            // Iterate through each row in the data for squares
+            data.forEach(row => {
+                // Convert the string to a boolean
+                const isGoodSeason = row.is_good_seas === "True";
+
+                // Calculate the end point of L2 for each rectangle
+                const x = x0 + row.idx * translationStep;
+                const x2 = x + h2 * Math.cos((-angle) * (Math.PI / 180));
+                const y2 = y + h1 + h2 * Math.sin(angle * (Math.PI / 180));
+
+                // Determine line thickness, fill color, and dashed property based on conditions
+                const isDashed = row.is_dashed === "True";
+                const currentThickness = +row.no_deaths || 1; // Use the "no_deaths" column directly
+                const fillColor = "rgba(243, 243, 243, 0.2)";
+                const dashLength = isDashed ? 2 : 0; // Adjust the dash length
+
+                // Append a path for each rectangle
+                svg.append("path")
+                    .attr("d", d3.line().curve(d3.curveLinearClosed)([
+                        [x, y],
+                        [x, y + h1 + 0.5], // Slightly overlap the joint
+                        [x2, y2],
+                        [x2, y2 - h1 - 0.5], // Slightly overlap the joint
+                    ]))
+                    .style("stroke", seasonColors[isGoodSeason])
+                    .style("stroke-width", isDashed ? currentThickness / 2 : currentThickness)
+                    .style("fill", fillColor)
+                    .style("stroke-dasharray", isDashed ? `${dashLength} ${dashLength}` : "none")
+                    .style("stroke-linejoin", "round"); // Set line join property
+
+                // Check if "high_deathrate" is True, then add a dot above the rectangle
+                if (row.high_deathrate === "True") {
+                    svg.append("circle")
+                        .attr("cx", x2)
+                        .attr("cy", y2 + 10)
+                        .attr("r", 2.5) // Adjust the radius as needed
+                        .style("fill", redDotColor);
                 }
-            }
+
+                // Check if "high_succprob" is True, then add a dot above the rectangle
+                const secondCircleOffset = row.high_deathrate === "False" ? 10 : 20;
+                if (row.high_succprob === "True") {
+                    svg.append("circle")
+                        .attr("cx", x2)
+                        .attr("cy", y2 + secondCircleOffset)
+                        .attr("r", 2.5) // Adjust the radius as needed
+                        .style("fill", blackDotColor);
+                        // .style("stroke", blackDotColor)
+                        // .style("stroke-width", 1); 
+                }
+            });
+
+            // Add text with peak name at the top left
+            svg.append("text")
+                .attr("x", x0)
+                .attr("y", y - 40)
+                .text(`Peak: ${data[0].pkname}`)
+                .style("fill", "black")
+                .style("font-size", "14px")
+                .style("font-weight", "bold");
         });
     </script>
 </body>
