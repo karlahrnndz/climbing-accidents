@@ -1,123 +1,61 @@
-peakid,no_deaths,no_exped,is_good_seas,high_deathrate,high_succprob,idx,is_dashed,pkname
-AMAD,0.5,1.0,True,False,False,150,True,Ama Dablam
-AMAD,1.0995311664203287,1.0,False,False,False,152,False,Ama Dablam
-AMAD,0.5,1.0,True,False,True,160,True,Ama Dablam
-AMAD,0.5,1.0,True,False,False,230,True,Ama Dablam
-AMAD,0.5,1.0,True,False,False,232,True,Ama Dablam
-AMAD,0.5,3.0,False,False,False,234,False,Ama Dablam
-AMAD,0.5,1.0,True,False,False,236,True,Ama Dablam
-AMAD,0.5,2.0,True,False,True,238,True,Ama Dablam
-AMAD,0.5,2.0,True,False,False,240,True,Ama Dablam
-AMAD,0.5,2.0,True,False,False,242,True,Ama Dablam
-AMAD,0.5,1.0,True,False,True,244,True,Ama Dablam
-AMAD,0.5,1.0,True,False,False,247,True,Ama Dablam
-AMAD,0.5,2.0,True,False,False,248,True,Ama Dablam
-AMAD,1.0995311664203287,2.0,False,False,False,250,False,Ama Dablam
-AMAD,0.5,1.0,True,False,True,251,True,Ama Dablam
-AMAD,0.5,3.0,True,False,False,252,True,Ama Dablam
-AMAD,0.5,2.0,True,False,False,255,True,Ama Dablam
-AMAD,0.5,2.0,False,False,True,256,False,Ama Dablam
-AMAD,0.5,3.0,True,False,False,258,True,Ama Dablam
-AMAD,0.5,2.0,True,False,False,259,True,Ama Dablam
-AMAD,0.5,2.0,True,False,False,260,True,Ama Dablam
-AMAD,0.5,3.0,True,False,False,262,True,Ama Dablam
-AMAD,0.5,1.0,True,False,False,263,True,Ama Dablam
-AMAD,0.5,2.0,True,False,False,264,True,Ama Dablam
-AMAD,0.5,4.0,True,False,False,266,True,Ama Dablam
-AMAD,0.5,1.0,True,False,True,267,True,Ama Dablam
-AMAD,0.5,2.0,False,False,False,268,False,Ama Dablam
-AMAD,0.5,4.0,True,False,False,270,True,Ama Dablam
-AMAD,0.5,2.0,True,False,False,271,True,Ama Dablam
-AMAD,0.5,4.0,True,False,False,272,True,Ama Dablam
-AMAD,0.5,4.0,True,False,False,274,True,Ama Dablam
-AMAD,0.5,1.0,True,False,False,276,True,Ama Dablam
-AMAD,0.5,8.0,True,False,False,278,True,Ama Dablam
-AMAD,0.5,5.0,True,False,False,279,True,Ama Dablam
-AMAD,0.5,6.0,True,False,False,280,True,Ama Dablam
-AMAD,0.5,4.0,True,False,False,282,True,Ama Dablam
-AMAD,0.5,2.0,True,False,False,283,True,Ama Dablam
-AMAD,0.5,4.0,False,False,False,284,False,Ama Dablam
-AMAD,0.5,10.0,False,False,False,286,False,Ama Dablam
-AMAD,0.5,5.0,True,False,False,287,True,Ama Dablam
-AMAD,0.5,2.0,True,False,False,288,True,Ama Dablam
-AMAD,0.5,10.0,True,False,False,290,True,Ama Dablam
-AMAD,0.5,4.0,True,False,False,291,True,Ama Dablam
-AMAD,0.5,3.0,True,False,False,292,True,Ama Dablam
-AMAD,0.5,9.0,True,False,False,294,True,Ama Dablam
-AMAD,0.5,1.0,True,False,False,295,True,Ama Dablam
-AMAD,0.5,2.0,True,False,False,296,True,Ama Dablam
-AMAD,0.5,17.0,True,False,False,298,True,Ama Dablam
-AMAD,0.5,4.0,True,False,False,300,True,Ama Dablam
-AMAD,0.5,19.0,True,False,False,302,True,Ama Dablam
-AMAD,0.5,1.0,True,False,False,303,True,Ama Dablam
-AMAD,0.5,4.0,True,False,False,304,True,Ama Dablam
-AMAD,0.5,12.0,True,False,False,306,True,Ama Dablam
-AMAD,0.5,4.0,True,False,False,307,True,Ama Dablam
-AMAD,0.5,3.0,True,False,False,308,True,Ama Dablam
-AMAD,0.5,32.0,False,False,True,310,False,Ama Dablam
-AMAD,0.5,2.0,True,False,False,311,True,Ama Dablam
-AMAD,0.5,4.0,True,False,False,312,True,Ama Dablam
-AMAD,0.5,21.0,True,False,False,314,True,Ama Dablam
-AMAD,0.5,6.0,True,False,False,315,True,Ama Dablam
-AMAD,0.5,12.0,True,False,False,316,True,Ama Dablam
-AMAD,0.5,25.0,True,False,False,318,True,Ama Dablam
-AMAD,0.5,3.0,True,False,False,319,True,Ama Dablam
-AMAD,0.5,6.0,True,False,False,320,True,Ama Dablam
-AMAD,0.5,17.0,True,False,False,322,True,Ama Dablam
-AMAD,0.5,2.0,True,False,False,323,True,Ama Dablam
-AMAD,0.5,4.0,True,False,False,324,True,Ama Dablam
-AMAD,0.5,21.0,True,False,False,326,True,Ama Dablam
-AMAD,0.5,5.0,True,False,False,327,True,Ama Dablam
-AMAD,0.5,8.0,True,False,False,328,True,Ama Dablam
-AMAD,0.5,28.0,False,False,False,330,False,Ama Dablam
-AMAD,0.5,3.0,True,False,False,331,True,Ama Dablam
-AMAD,0.5,10.0,True,False,False,332,True,Ama Dablam
-AMAD,0.5,41.0,True,False,False,334,True,Ama Dablam
-AMAD,0.5,4.0,True,False,False,335,True,Ama Dablam
-AMAD,0.5,9.0,True,False,False,336,True,Ama Dablam
-AMAD,0.5,47.0,True,False,False,338,True,Ama Dablam
-AMAD,0.5,13.0,True,False,False,340,True,Ama Dablam
-AMAD,2.0497655832101644,59.0,False,False,False,342,False,Ama Dablam
-AMAD,0.5,3.0,False,False,False,343,False,Ama Dablam
-AMAD,0.5,15.0,True,False,False,344,True,Ama Dablam
-AMAD,0.5,42.0,False,False,False,346,False,Ama Dablam
-AMAD,0.5,5.0,True,False,False,348,True,Ama Dablam
-AMAD,1.0995311664203287,44.0,False,False,False,350,False,Ama Dablam
-AMAD,0.5,1.0,True,False,False,351,True,Ama Dablam
-AMAD,0.5,6.0,True,False,False,352,True,Ama Dablam
-AMAD,0.5,54.0,True,False,False,354,True,Ama Dablam
-AMAD,0.5,1.0,True,False,True,355,True,Ama Dablam
-AMAD,0.5,14.0,True,False,False,356,True,Ama Dablam
-AMAD,0.5,47.0,True,False,False,358,True,Ama Dablam
-AMAD,0.5,4.0,True,False,False,359,True,Ama Dablam
-AMAD,0.5,6.0,True,False,False,360,True,Ama Dablam
-AMAD,0.5,73.0,False,False,True,362,False,Ama Dablam
-AMAD,0.5,11.0,True,False,False,364,True,Ama Dablam
-AMAD,0.5,52.0,True,False,False,366,True,Ama Dablam
-AMAD,0.5,2.0,True,False,False,367,True,Ama Dablam
-AMAD,0.5,15.0,True,False,False,368,True,Ama Dablam
-AMAD,0.5,51.0,True,False,False,370,True,Ama Dablam
-AMAD,0.5,2.0,True,False,False,371,True,Ama Dablam
-AMAD,1.0995311664203287,5.0,False,False,False,372,False,Ama Dablam
-AMAD,1.4502344167898358,72.0,False,False,False,374,False,Ama Dablam
-AMAD,0.5,4.0,True,False,False,376,True,Ama Dablam
-AMAD,0.5,31.0,True,False,False,378,True,Ama Dablam
-AMAD,0.5,3.0,True,False,False,380,True,Ama Dablam
-AMAD,0.5,60.0,False,False,False,382,False,Ama Dablam
-AMAD,0.5,7.0,True,False,False,384,True,Ama Dablam
-AMAD,0.5,59.0,False,False,False,386,False,Ama Dablam
-AMAD,0.5,7.0,False,False,False,388,False,Ama Dablam
-AMAD,1.0995311664203287,72.0,False,False,False,390,False,Ama Dablam
-AMAD,0.5,1.0,True,False,False,391,True,Ama Dablam
-AMAD,0.5,13.0,True,False,False,392,True,Ama Dablam
-AMAD,0.5,60.0,True,False,False,394,True,Ama Dablam
-AMAD,0.5,2.0,True,False,False,395,True,Ama Dablam
-AMAD,0.5,7.0,True,False,False,398,True,Ama Dablam
-AMAD,0.5,1.0,True,False,True,399,True,Ama Dablam
-AMAD,0.5,3.0,True,False,False,400,True,Ama Dablam
-AMAD,0.5,25.0,True,False,False,402,True,Ama Dablam
-AMAD,0.5,1.0,True,False,False,403,True,Ama Dablam
-AMAD,0.5,11.0,True,False,False,404,True,Ama Dablam
-AMAD,1.0995311664203287,39.0,False,False,False,406,False,Ama Dablam
-AMAD,0.5,1.0,True,False,False,407,True,Ama Dablam
-AMAD,0.5,8.0,True,False,False,408,True,Ama Dablam
+peakid,no_deaths,no_exped,is_good_seas,high_deathrate,high_succrate,idx,is_dashed,pkname
+MANA,0.5,1.0,True,False,False,29,True,Manaslu
+MANA,0.5,1.0,True,False,False,31,True,Manaslu
+MANA,0.5,1.0,True,False,False,32,True,Manaslu
+MANA,0.5,1.0,True,False,False,33,True,Manaslu
+MANA,0.5,1.0,True,False,False,34,True,Manaslu
+MANA,0.5,1.0,True,False,False,35,True,Manaslu
+MANA,0.5,1.0,True,False,False,49,True,Manaslu
+MANA,0.5,2.0,False,False,False,50,False,Manaslu
+MANA,3.0,2.0,False,True,False,51,False,Manaslu
+MANA,0.5,3.0,True,False,False,52,True,Manaslu
+MANA,0.5,1.0,False,False,False,53,False,Manaslu
+MANA,0.5,1.0,True,False,False,54,True,Manaslu
+MANA,0.5,2.0,True,False,False,55,True,Manaslu
+MANA,0.5,2.0,True,False,False,56,True,Manaslu
+MANA,0.5,2.0,True,False,False,57,True,Manaslu
+MANA,0.5,2.0,False,False,False,58,False,Manaslu
+MANA,0.5,4.0,True,False,False,59,True,Manaslu
+MANA,0.5,3.0,True,False,False,60,True,Manaslu
+MANA,1.4502344167898358,4.0,False,False,False,61,False,Manaslu
+MANA,1.4502344167898358,6.0,False,False,False,62,False,Manaslu
+MANA,0.5,5.0,True,False,False,63,True,Manaslu
+MANA,1.0995311664203287,5.0,False,False,False,64,False,Manaslu
+MANA,1.0995311664203287,4.0,False,False,False,65,False,Manaslu
+MANA,0.5,4.0,False,False,False,66,False,Manaslu
+MANA,0.5,5.0,True,False,False,67,True,Manaslu
+MANA,0.5,8.0,False,False,False,68,False,Manaslu
+MANA,2.0497655832101644,7.0,False,True,False,69,False,Manaslu
+MANA,1.0995311664203287,8.0,False,False,False,70,False,Manaslu
+MANA,1.0995311664203287,3.0,False,False,False,71,False,Manaslu
+MANA,1.0995311664203287,5.0,False,False,False,72,False,Manaslu
+MANA,0.5,1.0,True,False,False,73,True,Manaslu
+MANA,1.0995311664203287,3.0,False,False,False,74,False,Manaslu
+MANA,0.5,12.0,False,False,False,75,False,Manaslu
+MANA,1.0995311664203287,11.0,False,False,False,76,False,Manaslu
+MANA,1.0995311664203287,8.0,False,False,False,77,False,Manaslu
+MANA,0.5,12.0,True,False,False,78,True,Manaslu
+MANA,0.5,5.0,True,False,False,79,True,Manaslu
+MANA,0.5,5.0,False,False,False,80,False,Manaslu
+MANA,0.5,8.0,True,False,False,81,True,Manaslu
+MANA,0.5,5.0,True,False,False,82,True,Manaslu
+MANA,0.5,5.0,True,False,False,83,True,Manaslu
+MANA,0.5,6.0,True,False,False,84,True,Manaslu
+MANA,0.5,20.0,False,False,False,85,False,Manaslu
+MANA,0.5,5.0,True,False,False,86,True,Manaslu
+MANA,1.0995311664203287,45.0,False,False,False,87,False,Manaslu
+MANA,1.4502344167898358,35.0,False,False,False,88,False,Manaslu
+MANA,1.4502344167898358,36.0,False,False,False,89,False,Manaslu
+MANA,1.6990623328406573,35.0,False,False,False,90,False,Manaslu
+MANA,2.7185289404852413,67.0,False,False,False,91,False,Manaslu
+MANA,0.5,45.0,True,False,False,92,True,Manaslu
+MANA,0.5,30.0,False,False,False,93,False,Manaslu
+MANA,0.5,22.0,False,False,False,94,False,Manaslu
+MANA,0.5,35.0,False,False,False,95,False,Manaslu
+MANA,0.5,47.0,False,False,False,96,False,Manaslu
+MANA,1.0995311664203287,33.0,False,False,True,97,False,Manaslu
+MANA,0.5,48.0,False,False,True,98,False,Manaslu
+MANA,0.5,3.0,True,False,True,99,True,Manaslu
+MANA,0.5,25.0,False,False,False,100,False,Manaslu
+MANA,1.4502344167898358,42.0,False,False,False,101,False,Manaslu
+MANA,0.5,5.0,True,False,False,102,True,Manaslu
