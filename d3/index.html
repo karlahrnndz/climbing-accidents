@@ -3,14 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>D3.js Smooth Skewed Rectangles</title>
-    <script src="https://d3js.org/d3.v5.min.js"></script>
+    <title>Squares With D3</title>
+    <script src="https://d3js.org/d3.v7.min.js"></script>
 </head>
 <body>
     <svg width="2000" height="500" id="visualization"></svg>
-
-    <!-- Add a button for SVG download -->
-    <button id="downloadButton" disabled>Download SVG</button>
 
     <script>
         // Select the SVG container
@@ -18,101 +15,75 @@
 
         // Constants
         const x0 = 100; // Starting x coordinate
-        const y = 100; // Starting y coordinate
-        const h1 = 150;// Length of vertical lines
-        const h2 = 100; // Length of diagonal lines
-        const angle = 135;
-        const translationStep = 12;
+        const y0 = 100; // Starting y coordinate
+        const vert_len = 150;// Length of vertical lines
+        const diag_len = 100; // Length of diagonal lines
+        const angle = 135;  // Angle of diagonal lines
+        const translationStep = 12;  // How big of a step to take between years
         const redColor = "rgba(240, 52, 52, 1)";
         const blackColor = "rgba(22, 22, 22, 1)";
-        const backColor = "rgba(243, 243, 243, 1)";
+        const backgroundColor = "rgba(243, 243, 243, 1)";
 
-        // Declare peakName and a flag for data loaded outside any function scope
-        let peakName;
-        let isDataLoaded = false;
+        // Define colors for each square based based is_good_season
+        const seasonColors = {
+            true: blackColor,
+            false: redColor,
+        };
+
+        // Add a background square with the desired color
+        svg.append("rect")
+            .attr("width", "100%")
+            .attr("height", "100%")
+            .attr("fill", backgroundColor);
 
         // Load the CSV file asynchronously
         d3.csv("plt_df.csv").then(data => {
 
             peakName = data[0].pkname;
             
-            // Initialize variables for iterating through the CSV rows
-            let i = 0;
-            let currentRow = data[i];
-            
-            // Find the maximum value of idx in the CSV file
-            const maxIdx = d3.max(data, d => +d.idx);
-
-            // Define colors for each square
-            const seasonColors = {
-                true: blackColor,
-                false: redColor,
-            };
-
-            // Add a background rectangle with the desired color
-            svg.append("rect")
-                .attr("width", "100%")
-                .attr("height", "100%")
-                .attr("fill", backColor);
-
-            // Add red "X" at coordinates x=1, y=h1
+            // Add text with peak name at the top left
             svg.append("text")
                 .attr("x", x0)
-                .attr("y", 100)
-                .text(".")
-                .style("fill", redColor)
-                .style("font-size", "14px")
-                .style("font-weight", "bold");
-
-            // Add red "X" at coordinates x=102, y=h1
-            svg.append("text")
-                .attr("x", x0 + (102 * translationStep))
-                .attr("y", 100)
-                .text(".")
-                .style("fill", redColor)
+                .attr("y", y0 - 40)
+                .text(`Peak: ${peakName}`)
+                .style("fill", "black")
                 .style("font-size", "14px")
                 .style("font-weight", "bold");
 
             // Iterate through each row in the data for squares
             data.forEach(row => {
                 
-                // Convert the string to a boolean
+                // Extract is_good_seas from CSV and convert to boolean
                 const isGoodSeason = row.is_good_seas === "True";
 
-                // Calculate the end point of L2 for each rectangle
+                // Calculate keey values for square coordinates
                 const x = x0 + row.idx * translationStep;
-                const x2 = x + h2 * Math.cos((-angle) * (Math.PI / 180));
-                const y2 = y + h1 + h2 * Math.sin(angle * (Math.PI / 180));
+                const x2 = x + diag_len * Math.cos((-angle) * (Math.PI / 180));
+                const y2 = y0 + vert_len + diag_len * Math.sin(angle * (Math.PI / 180));
 
-                // Determine line thickness, fill color, and dashed property based on conditions
-                const isDashed = row.is_dashed === "True";
-                const currentThickness = +row.no_deaths || 1;
-                const dashLength = isDashed ? 2 : 0;
-
-                // Append a path for each rectangle
+                // Append a path for each square
                 svg.append("path")
                     .attr("d", d3.line().curve(d3.curveLinearClosed)([
-                        [x, y],
-                        [x, y + h1 + 0.5], // Slightly overlap the joint
+                        [x, y0],
+                        [x, y0 + vert_len],
                         [x2, y2],
-                        [x2, y2 - h1 - 0.5], // Slightly overlap the joint
+                        [x2, y2 - vert_len],
                     ]))
                     .style("stroke", seasonColors[isGoodSeason])
-                    .style("stroke-width", isDashed ? currentThickness / 2 : currentThickness)
-                    .style("fill", backColor)
-                    .style("stroke-dasharray", isDashed ? `${dashLength} ${dashLength}` : "none")
-                    .style("stroke-linejoin", "round"); // Set line join property
+                    .style("stroke-width", isGoodSeason ? 0.25 : row.no_deaths)
+                    .style("fill", backgroundColor)
 
-                // Check if "high_deathrate" is True, then add a dot above the rectangle
+                // Check if "high_deathrate" is True, then add a dot above the square
                 if (row.high_deathrate === "True") {
                     svg.append("circle")
                         .attr("cx", x2)
                         .attr("cy", y2 + 10)
                         .attr("r", 2.5)
-                        .style("fill", redColor);
+                        .style("stroke", redColor)
+                        .style("fill", backgroundColor);
                 }
 
-                // Check if "high_succrate" is True, then add a dot above the rectangle
+                // Check if "high_succrate" is True, then add a dot above the square
                 const secondCircleOffset = row.high_deathrate === "False" ? 10 : 20;
                 if (row.high_succrate === "True") {
                     svg.append("circle")
@@ -122,47 +93,6 @@
                         .style("fill", blackColor);
                 }
             });
-
-            isDataLoaded = true;
-            document.getElementById("downloadButton").disabled = false;
-
-            // Add text with peak name at the top left
-            svg.append("text")
-                .attr("x", x0)
-                .attr("y", y - 40)
-                .text(`Peak: ${peakName}`)
-                .style("fill", "black")
-                .style("font-size", "14px")
-                .style("font-weight", "bold");
-
-        });
-
-        // Add a click event listener to the download button
-        document.getElementById("downloadButton").addEventListener("click", function() {
-            // Debugging statements
-            console.log("Button clicked");
-            console.log("isDataLoaded:", isDataLoaded);
-            console.log("peakName:", peakName);
-
-            // Check if data is loaded
-            if (isDataLoaded && peakName) {
-                // Convert the SVG content to a data URI
-                const svgString = new XMLSerializer().serializeToString(document.getElementById("visualization"));
-                const svgBlob = new Blob([svgString], { type: "image/svg+xml" });
-                const svgUrl = URL.createObjectURL(svgBlob);
-
-                // Create a temporary link element, set its attributes, and trigger a click event
-                const downloadLink = document.createElement("a");
-                downloadLink.href = svgUrl;
-                downloadLink.download = `${peakName}.svg`;
-                document.body.appendChild(downloadLink);
-                downloadLink.click();
-
-                // Remove the temporary link element
-                document.body.removeChild(downloadLink);
-            } else {
-                console.error("Data is not loaded or peakName is undefined. Make sure your data is loaded before clicking the download button.");
-            }
         });
     </script>
 </body>

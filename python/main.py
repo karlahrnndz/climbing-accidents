@@ -157,4 +157,3 @@ for peakid in sorted(list(plt_df['peakid'].unique())):
     peak_df.to_csv(os.path.join(OUTPUT_FOLDER, 'plt_df.csv'), index=False)
 
     print(peakid)
-    print(peakid)
