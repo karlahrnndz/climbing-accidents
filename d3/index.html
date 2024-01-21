@@ -36,7 +36,7 @@
             .attr("height", "100%")
             .attr("fill", backgroundColor);
 
-        // Load the CSV file asynchronously
+        // Load the CSV file
         d3.csv("plt_df.csv").then(data => {
 
             peakName = data[0].pkname;
